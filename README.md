@@ -8,6 +8,11 @@ TODO
 - Swiftbrowser works as is outside Swift server
 - Separate login
 
+BUG
+---------------
+###Swiftbrowser
+- return 'unauthorized' after successfully uploaded a object
+
 Functions
 ---------------
 - Download/upload files from/to Swift
@@ -19,3 +24,8 @@ Requirements
 - Python >= 2.7 or 3.4
 - Django >= 1.7.2
 - python-swiftclient >= 2.4.0
+
+
+Test Requirements
+----------------
+- Mock >= 1.0.1

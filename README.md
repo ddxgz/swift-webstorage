@@ -5,7 +5,7 @@ The initial content is mostly forked from cschwede/django-swiftbrowser.
 
 TODO
 ---------------
-- Swiftbrowser works as is outside Swift server
+- ~~Swiftbrowser works as is outside Swift server~~
 - Separate login
 
 BUG

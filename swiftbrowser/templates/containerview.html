@@ -20,7 +20,7 @@
                 <th style="width: 1em;">
 
                 <a href="{% url "create_container" %}" class="btn btn-mini btn-danger">
-                    <i class="icon-plus icon-white"></i> 
+                    <span class="glyphicon-plus"></span> 
                 </a>
 
                 </th>
@@ -33,10 +33,9 @@
             <td><strong><a href="{% url "objectview" container=container.name %}" class="block">{{container.name}}</a></strong></td>
     	    <td class="hidden-phone">{{container.count}}</td>
     	    <td class="hidden-phone">{{container.bytes|filesizeformat}}</td>
-
             <td>
                 <div class="dropdown pull-right">
-                    <a class="btn btn-primary btn-danger btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-chevron-down icon-white"></i></a>
+                    <a class="btn btn-primary btn-danger btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><span class="caret"></span></a>
                     <ul class="dropdown-menu">
                         {% url "edit_acl" container=container.name as edit_acl_url %}
                         {% if edit_acl_url %}

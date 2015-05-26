@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     # url(r'^$', 'webadmin.views.index', name='index')
     # url(r'^container/', include('swiftbrowser.urls')),
     url(r'^', include('swiftbrowser.urls')),
+    url(r'^videoplayer', include('videoplayer.urls')),
 )

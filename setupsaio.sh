@@ -9,7 +9,7 @@ sudo apt-get install python-coverage python-dev python-nose \
 
 # loopback device
 sudo mkdir /srv
-sudo truncate -s 10GB /srv/swift-disk
+sudo truncate -s 8GB /srv/swift-disk
 sudo mkfs.xfs /srv/swift-disk
 
 sudo echo '/srv/swift-disk /mnt/sdb1 xfs loop,noatime,nodiratime,nobarrier,logbufs=8 0 0' >> /etc/fstab

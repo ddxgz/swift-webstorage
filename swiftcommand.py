@@ -1,0 +1,1 @@
+swift -A http://10.200.46.211:8080/auth/v1.0 -U test:tester -K testing stat

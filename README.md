@@ -13,6 +13,9 @@ BUG
 ###Swiftbrowser
 - return 'unauthorized' after successfully uploaded a object
 
+###Swiftstorage
+- containerview redirect to login view when haven't login
+
 Functions
 ---------------
 - Download/upload files from/to Swift

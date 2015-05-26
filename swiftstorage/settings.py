@@ -36,7 +36,8 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'swiftbrowser'
+    'swiftbrowser',
+    'videoplayer'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -69,9 +70,12 @@ DATABASES = {
 # Internationalization
 # https://docs.djangoproject.com/en/1.7/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+# LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'zh-hans'
 
-TIME_ZONE = 'UTC'
+# TIME_ZONE = 'America/Chicago'
+# TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Shanghai'
 
 USE_I18N = True
 
@@ -89,17 +93,37 @@ STATIC_URL = '/static/'
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
 
 # For Swift
-SWIFT_AUTH_URL = 'http://10.200.44.66:8080/auth/v1.0'
-SWIFT_AUTH_VERSION = 1  # 2 for keystone
-STORAGE_URL = 'http://10.200.44.66:8080/v1/'
-BASE_URL = 'http://10.200.44.66:8080'  # default if using built-in runserver
-SWAUTH_URL = 'http://10.200.44.66:8080/auth/v2'
+# # for v1.0
+# # SWIFT_AUTH_URL = 'http://10.200.44.66:8080/auth/v1.0'
+# # for v2.0
+# # SWIFT_AUTH_URL = 'http://10.200.44.66:5000/v2.0'
+# SWIFT_AUTH_VERSION = 1  # 2 for keystone
+# # STORAGE_URL = 'http://10.200.44.66:8080/v1/'
+# # BASE_URL = 'http://10.200.44.66'  # default if using built-in runserver
+# # SWAUTH_URL = 'http://10.200.44.66:8080/auth/v2'
+# ALLOWED_HOSTS = ['10.200.44.66', 'swift.inesa.com']
 
-TIME_ZONE = 'Europe/Berlin'
-LANGUAGE_CODE = 'de-de'
+# for v1.0
+SWIFT_AUTH_URL = 'http://125.215.36.173:8080/auth/v1.0'
+# for v2.0
+# SWIFT_AUTH_URL = 'http://10.200.44.66:5000/v2.0'
+SWIFT_AUTH_VERSION = 1  # 2 for keystone
+STORAGE_URL = 'http://125.215.36.173:8080/v1/'
+BASE_URL = 'http://125.215.36.173'  # default if using built-in runserver
+SWAUTH_URL = 'http://125.215.36.173:8080/auth/v2'
+ALLOWED_HOSTS = ['125.215.36.173', 'swift.inesa.com']
+
+# for v1.0
+# SWIFT_AUTH_URL = 'http://10.200.46.211:8080/auth/v1.0'
+# # for v2.0
+# # SWIFT_AUTH_URL = 'http://10.200.44.66:5000/v2.0'
+# SWIFT_AUTH_VERSION = 1  # 2 for keystone
+# STORAGE_URL = 'http://10.200.46.211:8080/v1/'
+# BASE_URL = 'http://10.200.44.84:8000'  # default if using built-in runserver
+# SWAUTH_URL = 'http://10.200.46.211:8080/auth/v2'
+# ALLOWED_HOSTS = ['0.0.0.0', 'insert_your_hostname_here']
+
+
 SECRET_KEY = 'DONT_USE_THIS_IN_PRODUCTION'
 STATIC_URL = "http://cdnjs.cloudflare.com/ajax/libs/"
 
-ALLOWED_HOSTS = ['10.200.44.66', 'swift.inesa.com']
-
-DEBUG = True

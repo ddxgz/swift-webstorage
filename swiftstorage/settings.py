@@ -88,6 +88,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = (
+    "static",
+)
 
 # Add for swiftbrowser
 SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
@@ -125,5 +128,5 @@ ALLOWED_HOSTS = ['125.215.36.173', 'swift.inesa.com']
 
 
 SECRET_KEY = 'DONT_USE_THIS_IN_PRODUCTION'
-STATIC_URL = "http://cdnjs.cloudflare.com/ajax/libs/"
+# STATIC_URL = "http://cdnjs.cloudflare.com/ajax/libs/"
 

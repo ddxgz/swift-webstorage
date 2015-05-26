@@ -36,7 +36,7 @@
 
             <td>
                 <div class="dropdown pull-right">
-                    <a class="dropdown-toggle btn btn-mini btn-danger" data-toggle="dropdown"><i class="icon-chevron-down icon-white"></i></a>
+                    <a class="btn btn-primary btn-danger btn-mini dropdown-toggle" data-toggle="dropdown" href="#"><i class="icon-chevron-down icon-white"></i></a>
                     <ul class="dropdown-menu">
                         {% url "edit_acl" container=container.name as edit_acl_url %}
                         {% if edit_acl_url %}

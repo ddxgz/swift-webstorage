@@ -6,6 +6,12 @@
 {% block content %}
 
 
+<div class="container">
+{% include "messages.html" %}
+
+
+
+
 <div>
     {{ videofile }}
 
@@ -14,11 +20,31 @@
 
 <div style="width: 640px; height: 360px; ">    
 {% load staticfiles %}
-{% static 'videoplayer/sewise.player.min.js' %}
     <script type="text/javascript" src="{% static 'videoplayer/sewise.player.min.js' %}?server=vod&type=mp4&videourl={{ videofile }}&title=VodVideo&buffer=5&skin=vodWhite">
     </script>
 </div>
 
+<div>
+	<!-- Standard button -->
+	<button type="button" class="btn btn-default">Default</button>
+
+	<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
+	<button type="button" class="btn btn-primary">Primary</button>
+
+	<!-- Indicates a successful or positive action -->
+	<button type="button" class="btn btn-success">Success</button>
+
+	<!-- Contextual button for informational alert messages -->
+	<button type="button" class="btn btn-info">Info</button>
+
+	<!-- Indicates caution should be taken with this action -->
+	<button type="button" class="btn btn-warning">Warning</button>
+
+	<!-- Indicates a dangerous or potentially negative action -->
+	<a type="button" class="btn btn-danger" href="{% url "delete_videos" %}">Delete Videos Temp</a>
+
+</div>
+</div>
 
 {% endblock %}
 

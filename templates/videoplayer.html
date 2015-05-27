@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load l10n %}
+{% load i18n %}
+{% load dateconv %}
+{% load lastpart %}
+{% block content %}
+
+
+<div>
+    {{ videofile }}
+
+</div>
+
+
+<div style="width: 640px; height: 360px; ">    
+{% load staticfiles %}
+{% static 'videoplayer/sewise.player.min.js' %}
+    <script type="text/javascript" src="{% static 'videoplayer/sewise.player.min.js' %}?server=vod&type=mp4&videourl={{ videofile }}&title=VodVideo&buffer=5&skin=vodWhite">
+    </script>
+</div>
+
+
+{% endblock %}
+
+
+

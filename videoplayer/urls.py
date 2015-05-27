@@ -6,7 +6,7 @@ from swiftbrowser.views import containerview, objectview, download,\
     edit_acl
 
 urlpatterns = patterns(
-    # 'swiftbrowser.views',
+    'videoplayer.views',
     # url(r'^$', index, name="index"), 
 
     url(r'^(?P<container>.+?)/(?P<objectname>.+?)$', videoplayer,

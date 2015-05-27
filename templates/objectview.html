@@ -10,7 +10,7 @@
 
         <ul class="breadcrumb">
             <li><a href="{% url "containerview" %}">Containers</a></li> 
-            <li><span class="divider">/</span>
+            <li><span class="divider"></span>
                 <a class="u" href="{% url "objectview" container=container %}">{{container}}</a></li>
 
             {% for prefix in prefixes %}
@@ -42,7 +42,7 @@
             <th style="width: 1em;">
                 <div class="dropdown pull-right">
                 <a class="dropdown-toggle btn btn-mini btn-danger" data-toggle="dropdown">
-                    <i class="icon-plus icon-white"></i>
+                    <i class="caret"></i>
                 </a>
                 <ul class="dropdown-menu">
                     <li>
@@ -91,11 +91,13 @@
                 <td class="hidden-phone"><i class="icon-file"></i></td>
                 <td><a href="{% url "download" container=container objectname=key.name %}" class="block">{{key.name|lastpart}}</a></td>
                 <td class="hidden-phone">{{key.last_modified|dateconv|date:"SHORT_DATETIME_FORMAT"}}</td>
-	            <td class="hidden-phone">{{key.bytes|filesizeformat}}</td>
-                    <td>
+	   <td class="hidden-phone">{{key.bytes|filesizeformat}}</td>
+                <td>
                     <div class="dropdown pull-right">
-                        <a class="dropdown-toggle btn btn-mini btn-danger" data-toggle="dropdown"><i class="icon-chevron-down icon-white"></i></a>
+                        <a class="dropdown-toggle btn btn-mini btn-danger" data-toggle="dropdown"><i class="caret"></i></a>
                         <ul class="dropdown-menu">
+                            <li><a href="{% url "videoplayer" container=container objectname=key.name %}"><i class="icon-time"></i> {% trans 'Video Player' %}</a></li>
+                            <li class="divider" />
                             <li><a href="{% url "tempurl" container=container objectname=key.name %}"><i class="icon-time"></i> {% trans 'Temporary URL' %}</a></li>
                             <li class="divider" />
                             <li><a href="{% url "delete_object" container=container objectname=key.name  %}" onclick="return confirm('{% trans 'Delete object' %} {{key.name}}?');" ><i class="icon-trash"></i> Delete object</a></li>

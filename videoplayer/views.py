@@ -4,6 +4,9 @@ import os
 import logging
 import time
 import urlparse
+import urllib2
+import urllib
+import requests
 import hmac
 from hashlib import sha1
 
@@ -29,11 +32,13 @@ def videoplayer(request, container, objectname):
     auth_token = request.session.get('auth_token', '')
     url = swiftbrowser.utils.get_temp_url(storage_url, auth_token,
                                           container, objectname)
-    logging.debug('videoplayer- storage_url:%s, auth_token:%s, url:%s' % 
-        (storage_url, auth_token, url))
+    logging.debug('con:%s, obj:%s, videoplayer- storage_url:%s, auth_token:%s, url:%s' % 
+        (container, objectname, storage_url, auth_token, url))
     if not url:
-        messages.add_message(request, messages.ERROR, _("Access denied."))
-        return redirect(objectview, container=container)
+        logging.debug('no url:%s' % url)
 
-    context = {'videofile': url}
-    return render(request, 'videoplayer/tempurl.html', context)
+    videofile = 'static/videos/'+objectname
+    # LOCAL_VIDEO = '/static/videos/DEMO_1432693581.36215.mp4'
+    urllib.urlretrieve (url, videofile)
+    context = {'videofile': '/'+videofile}
+    return render(request, 'videoplayer.html', context)

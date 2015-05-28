@@ -8,15 +8,24 @@
 
 <div class="container">
 {% include "messages.html" %}
+<ul class="breadcrumb">
+            <li><a href="{% url "containerview" %}">Containers</a></li> 
+            <li><span class="divider"></span>
+                <a class="u" href="{% url "objectview" container=container %}">{{container}}</a>
+             </li>
 
+            {% for prefix in prefixes %}
+                <li>
+                    <span class="divider">/</span>
+                    <a href="{% url "objectview" container=container prefix=prefix.full_name %}">{{prefix.display_name}}</a>
+                </li>
+            {% endfor %}
+                 <li>
+                    <span class="divider"></span>
+                    <strong>{{objectname}}</strong>
+                </li>
 
-
-
-<div>
-    {{ videofile }}
-
-</div>
-
+       </ul> 
 
 <div style="width: 640px; height: 360px; ">    
 {% load staticfiles %}
@@ -25,20 +34,9 @@
 </div>
 
 <div>
-	<!-- Standard button -->
-	<button type="button" class="btn btn-default">Default</button>
 
 	<!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
-	<button type="button" class="btn btn-primary">Primary</button>
-
-	<!-- Indicates a successful or positive action -->
-	<button type="button" class="btn btn-success">Success</button>
-
-	<!-- Contextual button for informational alert messages -->
-	<button type="button" class="btn btn-info">Info</button>
-
-	<!-- Indicates caution should be taken with this action -->
-	<button type="button" class="btn btn-warning">Warning</button>
+	<a type="button" class="btn btn-primary" href="/objects/{{container}}">Back to Container</a>
 
 	<!-- Indicates a dangerous or potentially negative action -->
 	<a type="button" class="btn btn-danger" href="{% url "delete_videos" %}">Delete Videos Temp</a>

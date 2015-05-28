@@ -19,6 +19,7 @@ from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
 
 import swiftbrowser
 
@@ -43,7 +44,8 @@ def videoplayer(request, container, objectname):
     urllib.urlretrieve (url, videofile)
     context = {'videofile': '/'+videofile,
                       'container': container, 
-                      'objectname': objectname
+                      'objectname': objectname,
+                      'session': request.session,
                     }
     return render(request, 'videoplayer.html', context)
 
@@ -62,6 +64,8 @@ def delete_videos(request):
     # return redirect(videoplayer)
     context = {'videofile': '',
                       'container': '', 
-                      'objectname': ''
+                      'objectname': '',
+                      'session': request.session,
                     }
-    return render(request, 'videoplayer.html', context)
+    return HttpResponseRedirect('/objects/videos')
+    # return render(request, 'videoplayer.html', context)

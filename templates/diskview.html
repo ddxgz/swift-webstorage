@@ -57,11 +57,11 @@
                     <li class="divider" />
                     <li>
                         {% if prefix %}
-                        <a href="{% url "create_pseudofolder" container=container prefix=prefix %}">
+                        <a href="{% url "create_folder"  prefix=prefix %}">
                         {% else %}
-                        <a href="{% url "create_pseudofolder" container=container %}">
+                        <a href="{% url "create_folder" %}">
                         {% endif %}
-                        <i class="icon-folder-open"></i> Create pseudofolder
+                        <i class="icon-folder-open"></i> Create folder
                         </a>
                     </li>
                 </ul>

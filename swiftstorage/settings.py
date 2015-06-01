@@ -37,7 +37,8 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'swiftbrowser',
-    'videoplayer'
+    'videoplayer',
+    'disk'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -128,11 +129,13 @@ SWIFT_AUTH_URL = 'http://10.200.46.211:8080/auth/v1.0'
 # SWIFT_AUTH_URL = 'http://10.200.44.66:5000/v2.0'
 SWIFT_AUTH_VERSION = 1  # 2 for keystone
 STORAGE_URL = 'http://10.200.46.211:8080/v1/'
-BASE_URL = '10.200.46.211'  # default if using built-in runserver
+BASE_URL = '10.200.44.84:8000'  # default if using built-in runserver
 SWAUTH_URL = 'http://10.200.46.211:8080/auth/v2'
 ALLOWED_HOSTS = ['0.0.0.0', 'insert_your_hostname_here']
 
 
-SECRET_KEY = 'DONT_USE_THIS_IN_PRODUCTION'
+# SECRET_KEY = 'DONT_USE_THIS_IN_PRODUCTION'
 # STATIC_URL = "http://cdnjs.cloudflare.com/ajax/libs/"
 
+# use for disk app
+DISK_CONTAINER = 'disk'

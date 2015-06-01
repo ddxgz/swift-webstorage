@@ -12,4 +12,5 @@ urlpatterns = patterns('',
     # url(r'^container/', include('swiftbrowser.urls')),
     url(r'^', include('swiftbrowser.urls')),
     url(r'^videoplayer/', include('videoplayer.urls')),
+    url(r'^disk/', include('disk.urls')),
 )

@@ -4,8 +4,8 @@ from disk.views import home, create_folder
 
 urlpatterns = patterns(
     'disk.views',
-    url(r'^$', home, name="home"), 
-    url(r'^objects/(?P<prefix>(.+)+)?$', objectview,
+    url(r'^(?P<prefix>(.+)+)?$', home, name="home"), 
+    # url(r'^objects/(?P<prefix>(.+)+)?$', home,
     #     name="objectview"),
 
     # url(r'^login/$', login, name="login"),

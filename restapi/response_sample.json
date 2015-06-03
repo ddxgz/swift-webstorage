@@ -1,0 +1,43 @@
+{
+    "meta": {
+        "accept-ranges": "bytes", 
+        "connection": "keep-alive", 
+        "content-length": "674", 
+        "content-type": "application/json; charset=utf-8", 
+        "date": "Wed, 03 Jun 2015 08:20:59 GMT", 
+        "x-container-bytes-used": "9222003", 
+        "x-container-object-count": "4", 
+        "x-storage-policy": "gold", 
+        "x-timestamp": "1432885032.32687", 
+        "x-trans-id": "txa5dbbbd9f1934dddba106-00556eb8eb"
+    }, 
+    "objects": {
+        "a.py": {
+            "bytes": 63, 
+            "content_type": "text/x-python", 
+            "hash": "8b8b92ce8d18de369e7299d6e98ac2ea", 
+            "last_modified": "2015-05-29T07:49:37.287580", 
+            "name": "a.py"
+        }, 
+        "fold1/": {
+            "bytes": 0, 
+            "content_type": "application/directory", 
+            "hash": "d41d8cd98f00b204e9800998ecf8427e", 
+            "last_modified": "2015-06-01T07:47:50.432890", 
+            "name": "fold1/"
+        }, 
+        "fold1/fqrouter2.12.7.apk": {
+            "bytes": 9221940, 
+            "content_type": "application/octet-stream", 
+            "hash": "c8806a42b85dd6abaf4ce4aca8079b54", 
+            "last_modified": "2015-06-03T08:20:18.139410", 
+            "name": "fold1/fqrouter2.12.7.apk"
+        }, 
+        "fold2/": {
+            "bytes": 0, 
+            "content_type": "application/directory", 
+            "hash": "d41d8cd98f00b204e9800998ecf8427e", 
+            "last_modified": "2015-06-03T08:20:53.663020", 
+            "name": "fold2/"
+        }
+    }

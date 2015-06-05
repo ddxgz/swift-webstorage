@@ -128,6 +128,14 @@ def objectview(request, container, prefix=None):
     base_url = get_base_url(request)
     account = storage_url.split('/')[-1]
 
+    for obj in objs:
+        # print('===========obj:%s' % obj)
+        obj['thumb'] = str(obj['name'][:-3])+'png'
+        obj['has_thumb'] = 1
+        # thumbs[obj['name']] = str(obj['name'][:-3])+'png'
+    # for th in thumbs.keys():
+        # print('---------------thumbs:%s-------' % obj)
+
     read_acl = meta.get('x-container-read', '').split(',')
     public = False
     required_acl = ['.r:*', '.rlistings']

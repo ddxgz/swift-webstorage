@@ -32,14 +32,15 @@
         </div>
  
     {% endif %}
-    <table class="table table-striped">
+    <table style="width: 100%" class="table table-striped">
         <thead>
         <tr>
-            <th style="width: 0.5em;" class="hidden-phone"></th>
+            <th style="width: 1%;" class="hidden-phone"></th>
             <th>{% trans 'Name' %}</th>
-            <th style="width: 12.5em;" class="hidden-phone">{% trans 'Created' %}</th>
-            <th style="width: 6em;" class="hidden-phone">{% trans 'Size' %}</th>
-            <th style="width: 1em;">
+            <th>{% trans 'Thumb' %}</th>
+            <th style="width: 10%;" class="hidden-phone">{% trans 'Created' %}</th>
+            <th style="width: 10%;" class="hidden-phone">{% trans 'Size' %}</th>
+            <th style="width: 0.1%;">
                 <div class="dropdown pull-right">
                 <a class="dropdown-toggle btn btn-mini btn-danger" data-toggle="dropdown">
                     <i class="caret"></i>
@@ -90,6 +91,11 @@
             <tr>
                 <td class="hidden-phone"><i class="icon-file"></i></td>
                 <td><a href="{% url "download" container=container objectname=key.name %}" class="block">{{key.name|lastpart}}</a></td>
+                <td class="hidden-phone">
+                  {% if key.has_thumb == 1 %} 
+                    <a href="{% url "videoplayer" container=container objectname=key.name %}"><img src="/static/videos/{{key.thumb}}"></img> </a>
+                    {% endif %}
+                    </td>
                 <td class="hidden-phone">{{key.last_modified|dateconv|date:"SHORT_DATETIME_FORMAT"}}</td>
 	   <td class="hidden-phone">{{key.bytes|filesizeformat}}</td>
                 <td>

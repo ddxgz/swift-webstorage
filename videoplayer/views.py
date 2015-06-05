@@ -22,6 +22,7 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 
 import swiftbrowser
+from swiftbrowser import ffmpegutils
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -42,6 +43,7 @@ def videoplayer(request, container, objectname):
     videofile = 'static/videos/'+objectname
     # LOCAL_VIDEO = '/static/videos/DEMO_1432693581.36215.mp4'
     urllib.urlretrieve (url, videofile)
+    thumb = ffmpegutils.create_video_thumb(objectname, 'static/videos/')
     context = {'videofile': '/'+videofile,
                       'container': container, 
                       'objectname': objectname,

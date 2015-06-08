@@ -293,6 +293,53 @@ class SinkAdapter(object):
                 raise falcon.HTTPBadRequest('bad req', 
                     'username or password not correct!')
 
+        elif req.method == 'DELETE':
+            resp_dict = {}
+
+            try:
+                # if path2file:
+                logging.debug(' path2file:%s' % (path2file))
+
+                logging.debug('env:%s , \nstream:%s, \ncontext:, \ninput:' % (
+                req.env, req.stream.read()))
+
+                # storage_url, auth_token = swiftclient.client.get_auth(
+                #                         self.conf.auth_url,
+                #                         self.conf.account_username,
+                #                       self.conf.password,
+                #                       auth_version=1)
+                # logging.debug('url:%s, token:%s' % (storage_url, auth_token))
+             
+                # temp_url = get_temp_url(storage_url, auth_token,
+                #                               self.conf.container, path2file)
+                
+                conn = swiftclient.client.Connection(self.conf.auth_url,
+                                  self.conf.account_username,
+                                  self.conf.password,
+                                  auth_version=self.conf.auth_version or 1)
+                meta, objects = conn.get_container(self.conf.container, 
+                    prefix=path2file)
+                logging.debug('meta: %s,  \n objects: %s' % (meta, objects))
+                if objects:
+                    for obj in objects:
+                        conn.delete_object(self.conf.container, obj['name'])
+                    resp_dict['description'] = 'All file have been deleted'
+                else:
+                    resp_dict['description'] = 'There is no file to be \
+                        deleted'
+                # resp_dict['meta'] = meta
+                # objs = {}
+                # for obj in objects:
+                #     logging.debug('obj:%s' % obj.get('name'))
+                # resp_dict['auth_token'] = auth_token
+                # resp_dict['storage_url'] = storage_url + '/' + path2file
+                resp.status = falcon.HTTP_204
+                logging.debug('resp_dict:%s' % resp_dict)
+
+            except:
+                raise falcon.HTTPBadRequest('bad req', 
+                    'username or password not correct!')
+
         resp.body = json.dumps(resp_dict, encoding='utf-8', 
             sort_keys=True, indent=4)
 

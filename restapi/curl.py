@@ -39,9 +39,16 @@ def main():
         #     stat = commands.getoutput('curl -X ' + method + head + url + data + ' -v')
         #     logging.debug('stat:%s' % stat)
 
-        if cmp(sys.argv[1], 'PUT' or 'put'):
-            method = ' PUT '
-            url = ' http://10.200.44.84:8080/v1/disk/fold1/subfole1/swiftconf.conf '
+        # if cmp(sys.argv[1], 'PUT' or 'put'):
+        #     method = ' PUT '
+        #     url = ' http://10.200.44.84:8080/v1/disk/fold1/subfole1/swiftconf.conf '
+        #     data = """ -d '{"file": "b.py"}' """
+        #     stat = commands.getoutput('curl -X ' + method + head + url + data + ' -v')
+        #     logging.debug('---stat:%s' % stat)
+
+        if cmp(sys.argv[1], 'DELETE' or 'delete'):
+            method = ' DELETE '
+            url = ' http://10.200.44.84:8080/v1/disk/a.py '
             data = """ -d '{"file": "b.py"}' """
             stat = commands.getoutput('curl -X ' + method + head + url + data + ' -v')
             logging.debug('---stat:%s' % stat)

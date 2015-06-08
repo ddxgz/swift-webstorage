@@ -1,14 +1,14 @@
 import mock
 import random
 
-from django.test import TestCase
+import unittest
 from django.core.urlresolvers import reverse
 
 import swiftclient
-import restapi
+import restapi import HomeListener
 
 
-class RESTApiTest(TestCase):
+class RESTApiTest(unittest.TestCase):
     """ Unit tests for swiftbrowser
 
     All calls using python-swiftclient.clients are replaced using mock """

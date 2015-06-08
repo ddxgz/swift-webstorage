@@ -105,8 +105,46 @@ def get_temp_key(storage_url, auth_token):
     return key
 
 
-def get_temp_url(storage_url, auth_token, container, objectname, expires=600):
-    key = get_temp_key(storage_url, auth_token)
+def get_fine_temp_key(storage_url, auth_token, container_name=None):
+    """ Tries to get meta-temp-url key from account.
+    If not set, generate tempurl and save it to acocunt.
+    This requires at least account owner rights. """
+
+    logging.debug('  in get_temp_key: container_name:%s ' % container_name )
+
+    try:
+        if container_name:
+            container = client.head_container(storage_url, auth_token, 
+                container_name)
+            key = container.get('x-container-meta-temp-url-key')
+            logging.debug(' key in get_temp_key: %s ' % key)
+        else:
+            account = client.head_account(storage_url, auth_token)
+            key = account.get('x-account-meta-temp-url-key')
+            logging.debug(' key in get_temp_key: %s ' % key)
+    except client.ClientException:
+        return None
+    logging.debug(' account or container in get_temp_key: %s ' 
+        % account or container)
+
+    if not key:
+        if container_name:
+            raise ValueError('cannot get key, can no account rights to \
+                get account key!')
+        else:
+            chars = string.ascii_lowercase + string.digits
+            key = ''.join(random.choice(chars) for x in range(32))
+            headers = {'x-account-meta-temp-url-key': key}
+            try:
+                client.post_account(storage_url, auth_token, headers)
+            except client.ClientException:
+                return None
+    return key
+
+
+def get_temp_url(storage_url, auth_token, container, objectname, expires=6000):
+    # key = get_temp_key(storage_url, auth_token)
+    key = get_fine_temp_key(storage_url, auth_token)
     logging.debug(' storage_url in get_temp_url: %s ' % storage_url)
     if not key:
         return None

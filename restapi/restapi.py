@@ -129,6 +129,57 @@ class HomeListener:
         resp.body = json.dumps(resp_dict, encoding='utf-8', 
             sort_keys=True, indent=4)
 
+    # def on_put(self, req, resp, filename):
+    #     """
+    #     :param req.header.username: the username, should be tenant:user when dev
+    #     :param req.header.password: password 
+
+    #     :returns: a json contains all objects in disk container, and metameata
+    #             {"meta":{}, "objects":{"obj1": {}}}
+    #     """
+    #     try:
+    #         username = req.get_header('username') or 'un'
+    #         password = req.get_header('password') or 'pw'
+    #         logging.debug('username:%s, password:%s' % (username, password))
+    #     except:
+    #         raise falcon.HTTPBadRequest('bad req', 
+    #             'when read from req, please check if the req is correct.')
+    #     try:
+    #         # if path2file:
+    #     try:
+    #         # if path2file:
+    #         logging.debug(' filename:%s' % (filename))
+
+    #         storage_url, auth_token = swiftclient.client.get_auth(
+    #                                 self.conf.auth_url,
+    #                                 self.conf.account_username,
+    #                               self.conf.password,
+    #                               auth_version=1)
+    #         # logging.debug('rs: %s'% swiftclient.client.get_auth(
+    #         #                         self.conf.auth_url,
+    #         #                         self.conf.account_username,
+    #         #                       self.conf.password,
+    #         #                       auth_version=1))
+    #         logging.debug('url:%s, toekn:%s' % (storage_url, auth_token))
+         
+    #         temp_url = get_temp_url(storage_url, auth_token,
+    #                                       self.conf.container, filename)
+    #         resp_dict = {}
+    #         # resp_dict['meta'] = meta
+    #         # objs = {}
+    #         # for obj in objects:
+    #         #     logging.debug('obj:%s' % obj.get('name'))
+    #         #     objs[obj.get('name')] = obj
+    #         resp_dict['temp_url'] = temp_url
+    #         logging.debug('resp_dict:%s' % resp_dict)
+
+    #     except:
+    #         raise falcon.HTTPBadRequest('bad req', 
+    #             'username or password not correct!')
+    #     resp.status = falcon.HTTP_200
+    #     resp.body = json.dumps(resp_dict, encoding='utf-8', 
+    #         sort_keys=True, indent=4)
+    #     resp.body = temp_url
 
     def on_post(self, req, resp):
         try:
@@ -171,25 +222,16 @@ class HomeListener:
         resp.body = json.dumps({}, encoding='utf-8')
 
 
-    def on_put(self, req, resp):
-        pass
-
     def on_delete(self, req, resp):
         pass
 
 
 class SinkAdapter(object):
-
-    # engines = {
-    #     'ddg': 'https://duckduckgo.com',
-    #     'y': 'https://search.yahoo.com/search',
-    # }
     conf = Config('swiftconf.conf')
+
     def __call__(self, req, resp, path2file):
-        # url = self.engines[engine]
-        # params = {'q': req.get_param('q', True)}
-        # result = requests.get(url, params=params)
-        logging.debug('in sink req:%s   path2file:%s' % (req,path2file))
+        logging.debug('in sink req.method:%s  path2file:%s' % (
+            req.method, path2file))
         try:
             username = req.get_header('username') or 'un'
             password = req.get_header('password') or 'pw'
@@ -198,56 +240,77 @@ class SinkAdapter(object):
             raise falcon.HTTPBadRequest('bad req', 
                 'when read from req, please check if the req is correct.')
 
-        if req.method is 'GET' or 'get':
+        if req.method == 'GET':
             try:
                 storage_url, auth_token = swiftclient.client.get_auth(
                                         self.conf.auth_url,
                                         self.conf.account_username,
                                       self.conf.password,
                                       auth_version=1)
-                # logging.debug('rs: %s'% swiftclient.client.get_auth(
-                #                         self.conf.auth_url,
-                #                         self.conf.account_username,
-                #                       self.conf.password,
-                #                       auth_version=1))
                 logging.debug('url:%s, toekn:%s' % (storage_url, auth_token))
-             
                 temp_url = get_temp_url(storage_url, auth_token,
                                               self.conf.container, path2file)
-
                 resp_dict = {}
                 # resp_dict['meta'] = meta
-                # objs = {}
-                # for obj in objects:
-                #     logging.debug('obj:%s' % obj.get('name'))
-                #     objs[obj.get('name')] = obj
                 resp_dict['temp_url'] = temp_url
                 resp_dict['path2file'] = path2file
+                resp.status = falcon.HTTP_200
                 # logging.debug('resp_dict:%s' % resp_dict)
 
             except:
                 raise falcon.HTTPBadRequest('bad req', 
                     'username or password not correct!')
-        resp.status = falcon.HTTP_200
+
+        elif req.method == 'PUT':
+            try:
+                # if path2file:
+                logging.debug(' path2file:%s' % (path2file))
+
+                logging.debug('env:%s , \nstream:%s, \ncontext:, \ninput:' % (
+                req.env, req.stream.read()))
+
+                storage_url, auth_token = swiftclient.client.get_auth(
+                                        self.conf.auth_url,
+                                        self.conf.account_username,
+                                      self.conf.password,
+                                      auth_version=1)
+      
+                logging.debug('url:%s, token:%s' % (storage_url, auth_token))
+             
+                # temp_url = get_temp_url(storage_url, auth_token,
+                #                               self.conf.container, path2file)
+                resp_dict = {}
+                # resp_dict['meta'] = meta
+                # objs = {}
+                # for obj in objects:
+                #     logging.debug('obj:%s' % obj.get('name'))
+                resp_dict['auth_token'] = auth_token
+                resp_dict['storage_url'] = storage_url + '/' + path2file
+                resp.status = falcon.HTTP_202
+                logging.debug('resp_dict:%s' % resp_dict)
+
+            except:
+                raise falcon.HTTPBadRequest('bad req', 
+                    'username or password not correct!')
+
         resp.body = json.dumps(resp_dict, encoding='utf-8', 
             sort_keys=True, indent=4)
-        # resp.body = temp_url
 
 
 app = falcon.API()
 
-# things = ThingsRe()
 home_listener = HomeListener()
 path_listener = PathListener()
 
-# app.add_route('/things', things)
 # app.add_route('/v1/disk/{path}/{file}', path_listener)
 app.add_route('/v1/disk', home_listener)
+# app.add_route('/v1/disk/{filename}', home_listener)
 
 sink = SinkAdapter()
 app.add_sink(sink, r'^/v1/disk/(?P<path2file>.+?)$')
 
-# Useful for debugging problems in your API; works with pdb.set_trace()
+
+## Useful for debugging problems in your API; works with pdb.set_trace()
 # if __name__ == '__main__':
 #     httpd = simple_server.make_server('127.0.0.1', 8008, app)
 #     httpd.serve_forever()

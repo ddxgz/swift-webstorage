@@ -313,6 +313,7 @@ class AccountListener:
         """
         :param req.header.username: the username
         :param req.header.password: password 
+        :param req.header.email: email 
 
         :returns: a json contains info of the operation, if the register is
             success or failed

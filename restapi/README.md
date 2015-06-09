@@ -25,6 +25,8 @@ TODO
 - Separate login
 - Verify if the request if ok, such as if the file exists when get, 
 	or the path2file is a fold
+- set the temp_key expires time based on the size of target file 
+
 
 BUG
 ---------------

@@ -5,14 +5,17 @@ import falcon
 import json
 import Queue
 import sys, os
+import datetime
 import logging
 
-from utils import get_temp_key, get_base_url, get_temp_url
+from utils import get_temp_key, get_temp_url
 
 import swiftclient
 # from swiftclient import client
+import peewee
 
 from config import Config
+from models import AccountModel, database
 
 logging.basicConfig(format='===========My:%(levelname)s:%(message)s=========', 
     level=logging.DEBUG)
@@ -25,11 +28,7 @@ class PathListener:
 
     def on_get(self, req, resp, path, thefile):
         """
-        :param req.header.username: the username, should be tenant:user when dev
-        :param req.header.password: password 
-
-        :returns: a json contains all objects in disk container, and metameata
-                {"meta":{}, "objects":{"obj1": {}}}
+        unuseful at present
         """
         try:
             username = req.get_header('username') or 'un'
@@ -129,59 +128,11 @@ class HomeListener:
         resp.body = json.dumps(resp_dict, encoding='utf-8', 
             sort_keys=True, indent=4)
 
-    # def on_put(self, req, resp, filename):
-    #     """
-    #     :param req.header.username: the username, should be tenant:user when dev
-    #     :param req.header.password: password 
-
-    #     :returns: a json contains all objects in disk container, and metameata
-    #             {"meta":{}, "objects":{"obj1": {}}}
-    #     """
-    #     try:
-    #         username = req.get_header('username') or 'un'
-    #         password = req.get_header('password') or 'pw'
-    #         logging.debug('username:%s, password:%s' % (username, password))
-    #     except:
-    #         raise falcon.HTTPBadRequest('bad req', 
-    #             'when read from req, please check if the req is correct.')
-    #     try:
-    #         # if path2file:
-    #     try:
-    #         # if path2file:
-    #         logging.debug(' filename:%s' % (filename))
-
-    #         storage_url, auth_token = swiftclient.client.get_auth(
-    #                                 self.conf.auth_url,
-    #                                 self.conf.account_username,
-    #                               self.conf.password,
-    #                               auth_version=1)
-    #         # logging.debug('rs: %s'% swiftclient.client.get_auth(
-    #         #                         self.conf.auth_url,
-    #         #                         self.conf.account_username,
-    #         #                       self.conf.password,
-    #         #                       auth_version=1))
-    #         logging.debug('url:%s, toekn:%s' % (storage_url, auth_token))
-         
-    #         temp_url = get_temp_url(storage_url, auth_token,
-    #                                       self.conf.container, filename)
-    #         resp_dict = {}
-    #         # resp_dict['meta'] = meta
-    #         # objs = {}
-    #         # for obj in objects:
-    #         #     logging.debug('obj:%s' % obj.get('name'))
-    #         #     objs[obj.get('name')] = obj
-    #         resp_dict['temp_url'] = temp_url
-    #         logging.debug('resp_dict:%s' % resp_dict)
-
-    #     except:
-    #         raise falcon.HTTPBadRequest('bad req', 
-    #             'username or password not correct!')
-    #     resp.status = falcon.HTTP_200
-    #     resp.body = json.dumps(resp_dict, encoding='utf-8', 
-    #         sort_keys=True, indent=4)
-    #     resp.body = temp_url
 
     def on_post(self, req, resp):
+        """
+        unuseful at present
+        """
         try:
             username = req.get_header('username') or 'un'
             password = req.get_header('password') or 'pw'
@@ -217,19 +168,28 @@ class HomeListener:
         # resp.status = falcon.HTTP_202
         # resp.body = json.dumps(resp_dict, encoding='utf-8', sort_keys=True, indent=4)
 
-
-        resp.status = falcon.HTTP_202
+        resp.status = falcon.HTTP_201
         resp.body = json.dumps({}, encoding='utf-8')
-
 
     def on_delete(self, req, resp):
         pass
 
 
-class SinkAdapter(object):
+class DiskSinkAdapter(object):
     conf = Config('swiftconf.conf')
 
     def __call__(self, req, resp, path2file):
+        """
+        :param req.header.username: the username, should be tenant:user when dev
+        :param req.header.password: password 
+        :path2file the part in the request url /v1/disk/(?P<path2file>.+?), to 
+            identify the resource to manipulate 
+
+        :returns: a json contains correspond response info
+            GET: the temp_url of the file in a resp dict
+            PUT: the auth_token and storage_url in a resp dict for uploading file
+            DELETE: description of if the operation success or fail
+        """
         logging.debug('in sink req.method:%s  path2file:%s' % (
             req.method, path2file))
         try:
@@ -286,7 +246,7 @@ class SinkAdapter(object):
                 #     logging.debug('obj:%s' % obj.get('name'))
                 resp_dict['auth_token'] = auth_token
                 resp_dict['storage_url'] = storage_url + '/disk/' + path2file
-                resp.status = falcon.HTTP_202
+                resp.status = falcon.HTTP_201
                 logging.debug('resp_dict:%s' % resp_dict)
 
             except:
@@ -344,16 +304,102 @@ class SinkAdapter(object):
             sort_keys=True, indent=4)
 
 
+
+class AccountListener:
+    def __init__(self):
+        self.conf = Config('swiftconf.conf')
+
+    def on_post(self, req, resp):
+        """
+        :param req.header.username: the username
+        :param req.header.password: password 
+
+        :returns: a json contains info of the operation, if the register is
+            success or failed
+        """
+        logging.debug('in account post')
+        resp_dict = {}
+
+        try:
+            username = req.get_header('username') or 'un'
+            password = req.get_header('password') or 'pw'
+            email = req.get_header('email') or 'email'
+            # params = req.get_param_as_list()
+            # logging.debug('params:%s'%params)
+            logging.debug('username:%s, password:%s, email:%s' % 
+                (username, password, email))
+        except:
+            raise falcon.HTTPBadRequest('bad req', 
+                'when read from req, please check if the req is correct.')
+        
+        try:
+            logging.debug('in account post create')
+
+            with database.atomic():
+                AccountModel.create(username=username, 
+                    password=password,
+                    email=email,
+                    join_date=str(datetime.datetime.now())+' GMT+8',
+                    account_level=0)
+            resp_dict['info'] = 'successfully create user:%s' % username
+            resp.status = falcon.HTTP_201
+
+        except peewee.IntegrityError:
+            logging.debug('in account post create except')
+
+            # `username` is a unique column, so this username already exists,
+            # making it safe to call .get().
+            old_user = AccountModel.get(AccountModel.username == username)
+            logging.debug('user exists...')
+            resp_dict['info'] = 'user exists, did not create user:%s' % username
+            resp.status = falcon.HTTP_403
+
+
+        # try:
+        #     # post_data = req.env
+        #     # logging.debug('env:%s , \nstream:%s, \ncontext:%s, \ninput:%s' % (
+        #     #     req.env, req.stream.read(), req.context, req.env['wsgi.input'].read()))
+        #     AccountModel.select().where(username == username))
+
+        #     user = AccountModel.create(
+        #         username=username,
+        #         password=password,
+        #         email=email,
+        #         join_date=str(datetime.datetime.now())+' GMT+8')
+        #     user.save()
+
+        #     resp_dict = {}
+        #     resp_dict['info'] = 'successfully create user:%s' % username
+        # except:
+        #     raise falcon.HTTPBadRequest('bad req', 
+        #         'username or password or email not correct or exist!')
+        resp.body = json.dumps(resp_dict, encoding='utf-8')
+
+    def on_get(self, req, resp):
+        """
+        :returns: info of the user in the req.header
+        """
+        pass
+
+    def on_delete(self, req, resp):
+        """
+        delete the account, and all the files belong to this account
+        """
+        pass
+
+
 app = falcon.API()
 
 home_listener = HomeListener()
 path_listener = PathListener()
+account_listener = AccountListener()
 
 # app.add_route('/v1/disk/{path}/{file}', path_listener)
 app.add_route('/v1/disk', home_listener)
+app.add_route('/v1/account', account_listener)
 # app.add_route('/v1/disk/{filename}', home_listener)
 
-sink = SinkAdapter()
+sink = DiskSinkAdapter()
 app.add_sink(sink, r'^/v1/disk/(?P<path2file>.+?)$')
 
 

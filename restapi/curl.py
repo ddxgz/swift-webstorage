@@ -1,6 +1,7 @@
 import commands
 import sys
 import os
+import datetime
 import logging
 
 logging.basicConfig(format='===========%(levelname)s:%(message)s=========', 
@@ -79,8 +80,9 @@ if __name__ == '__main__':
     #     http://10.200.46.211:8080/v1/AUTH_test/disk/curl.py')
 
     ## this is ok to upload a file
-    stat = commands.getoutput('curl -X PUT --data-binary "@curl.py" \
-        -H "X-Auth-Token: AUTH_tk237f2dde05dc419c8ee825bb9d6e2f60"\
-        http://10.200.46.211:8080/v1/AUTH_test/disk/curl.py')
-    logging.debug('put stat:%s' % stat)
-    main()
+    # stat = commands.getoutput('curl -X PUT --data-binary "@curl.py" \
+    #     -H "X-Auth-Token: AUTH_tk237f2dde05dc419c8ee825bb9d6e2f60"\
+    #     http://10.200.46.211:8080/v1/AUTH_test/disk/curl.py')
+    # logging.debug('put stat:%s' % stat)
+    # main()
+    print(str(datetime.datetime.now())+' GMT+8')

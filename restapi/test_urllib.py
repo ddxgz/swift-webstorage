@@ -1,7 +1,7 @@
 import sys
 import os
 import ast
-import urllib2
+import urllib, urllib2
 import requests
 
 import logging
@@ -41,6 +41,15 @@ class Visit():
 		put_resp = requests.put(storage_url, files=files, headers=headers)
 		logging.debug('put_resp:%s' % (put_resp))
 
+
+	def post(self, suffix_url='', headers=None, data=None):
+		req = urllib2.Request(self.baseurl+suffix_url, 
+			headers=headers, data=data)
+		resp = urllib2.urlopen(req)
+		page = resp.read()
+		logging.debug('resp:%s, page:%s' % (resp, page))
+
+
 	def delete(self, suffix_url='', headers=None, data=None):
 		req = urllib2.Request(self.baseurl+suffix_url, headers=headers, 
 			data=data)
@@ -51,10 +60,19 @@ class Visit():
 		return page
 
 
-headers = { 'username':'test:tester',
-			'password':'testing' }
-visit = Visit('http://10.200.44.84:8080/v1/disk')
+# headers = { 'username':'test:tester',
+# 			'password':'testing' }
+# visit = Visit('http://10.200.44.84:8080/v1/disk')
 # visit.get(headers=headers)
 # visit.put(suffix_url='/curl.py', headers=headers)
 # visit.put_file(filename='curl.py', suffix_url='/fold3/curl.py', headers=headers)
 # visit.delete(suffix_url='/fold3/curl.py', headers=headers)
+
+headers = { 'username':'user2',
+			'password':'password1',
+			'email':'user2@email.com' }
+data = { 'username':'user1',
+			'password':'password1',
+			'email':'user1@email.com' }
+visit = Visit('http://10.200.44.84:8080/v1/account')
+visit.post(headers=headers, data=urllib.urlencode(data))

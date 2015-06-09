@@ -46,12 +46,12 @@ def main():
         #     stat = commands.getoutput('curl -X ' + method + head + url + data + ' -v')
         #     logging.debug('---stat:%s' % stat)
 
-        if cmp(sys.argv[1], 'DELETE' or 'delete'):
-            method = ' DELETE '
-            url = ' http://10.200.44.84:8080/v1/disk/a.py '
-            data = """ -d '{"file": "b.py"}' """
-            stat = commands.getoutput('curl -X ' + method + head + url + data + ' -v')
-            logging.debug('---stat:%s' % stat)
+        # if cmp(sys.argv[1], 'DELETE' or 'delete'):
+        #     method = ' DELETE '
+        #     url = ' http://10.200.44.84:8080/v1/disk/a.py '
+        #     data = """ -d '{"file": "b.py"}' """
+        #     stat = commands.getoutput('curl -X ' + method + head + url + data + ' -v')
+        #     logging.debug('---stat:%s' % stat)
 
 
     # stat = commands.getoutput('curl -X ' + method + head + url + data + ' -v')
@@ -74,8 +74,13 @@ if __name__ == '__main__':
     #    -F signature=9c0f7ac2d6bb5a32371e0087980d517430ef8127 \
     #    -F redirect=http://10.200.46.211:8080 \
     #    -F file=@swiftconf.conf')
-    # stat = commands.getoutput('curl -X PUT -T swiftconf.conf -D -\
-    #     -H "X-Auth-Token: AUTH_tk0b4e4026cf6e48209340c2b311424138"\
-    #     http://10.200.46.211:8080/v1/AUTH_test/disk/swiftconf.conf')
-    # logging.debug('put stat:%s' % stat)
+    # stat = commands.getoutput('curl -X POST -T curl.py -D -\
+    #     -H "X-Auth-Token: AUTH_tk237f2dde05dc419c8ee825bb9d6e2f60"\
+    #     http://10.200.46.211:8080/v1/AUTH_test/disk/curl.py')
+
+    ## this is ok to upload a file
+    stat = commands.getoutput('curl -X PUT --data-binary "@curl.py" \
+        -H "X-Auth-Token: AUTH_tk237f2dde05dc419c8ee825bb9d6e2f60"\
+        http://10.200.46.211:8080/v1/AUTH_test/disk/curl.py')
+    logging.debug('put stat:%s' % stat)
     main()

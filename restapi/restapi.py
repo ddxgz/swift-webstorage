@@ -285,7 +285,7 @@ class SinkAdapter(object):
                 # for obj in objects:
                 #     logging.debug('obj:%s' % obj.get('name'))
                 resp_dict['auth_token'] = auth_token
-                resp_dict['storage_url'] = storage_url + '/' + path2file
+                resp_dict['storage_url'] = storage_url + '/disk/' + path2file
                 resp.status = falcon.HTTP_202
                 logging.debug('resp_dict:%s' % resp_dict)
 

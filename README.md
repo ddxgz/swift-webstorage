@@ -28,7 +28,8 @@ Requirements
 - Django >= 1.7.2
 - python-swiftclient >= 2.4.0
 - Gunicorn >= 19.0.0
-
+- Falcon >= 0.3.0
+ 
 
 Test Requirements
 ----------------

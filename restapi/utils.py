@@ -118,18 +118,18 @@ def get_temp_url(storage_url, auth_token, container, objectname, expires=6000):
     return str(url_)
 
 
-storage_url, auth_token = client.get_auth(
-                                    'http://10.200.46.211:8080/auth/v1.0',
-                                    'test:tester',
-                                  'testing',
-                                  auth_version=1)
-            # logging.debug('rs: %s'% swiftclient.client.get_auth(
-            #                         self.conf.auth_url,
-            #                         self.conf.account_username,
-            #                       self.conf.password,
-            #                       auth_version=1))
-logging.debug('url:%s, toekn:%s' % (storage_url, auth_token))
+# storage_url, auth_token = client.get_auth(
+#                                     'http://10.200.46.211:8080/auth/v1.0',
+#                                     'test:tester',
+#                                   'testing',
+#                                   auth_version=1)
+#             # logging.debug('rs: %s'% swiftclient.client.get_auth(
+#             #                         self.conf.auth_url,
+#             #                         self.conf.account_username,
+#             #                       self.conf.password,
+#             #                       auth_version=1))
+# logging.debug('url:%s, toekn:%s' % (storage_url, auth_token))
          
-temp_url = get_fine_grained_temp_key(storage_url, auth_token,
-                                          'disk')
-print(temp_url)
+# temp_url = get_fine_grained_temp_key(storage_url, auth_token,
+#                                           'disk')
+# print(temp_url)

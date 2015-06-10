@@ -43,3 +43,5 @@ Requirements
 - Python >= 2.7 or 3.4
 - python-swiftclient >= 2.4.0
 - Gunicorn or uWsgi
+- Falcon >= 0.3.0
+- peewee
